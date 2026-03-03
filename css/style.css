@@ -1014,3 +1014,114 @@ button { touch-action: manipulation; }
   font-size: 1.2rem;
   color: rgba(245,240,232,0.3);
 }
+
+/* ============================================================
+   NAV BAR ACTION BUTTONS
+   ============================================================ */
+.nav-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  padding: 0 10px;
+  overflow: hidden;
+  /* Desktop: center the buttons */
+  justify-content: center;
+}
+
+/* Desktop: fixed max-width so buttons stay centered */
+@media (min-width: 600px) {
+  .nav-action-buttons {
+    justify-content: center;
+    gap: 10px;
+  }
+  .nav-btn { flex-shrink: 0; }
+}
+
+/* Mobile: stretch buttons to fill available space */
+@media (max-width: 599px) {
+  .nav-action-buttons {
+    justify-content: stretch;
+    gap: 5px;
+  }
+  .nav-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0 4px;
+    text-align: center;
+  }
+  .nav-btn-deal { flex: 2; }
+}
+
+.nav-thinking {
+  font-size: 0.7rem;
+  color: rgba(245,240,232,0.4);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  display: none;
+}
+.nav-thinking:not(:empty) { display: block; }
+
+.nav-btn {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  padding: 0 12px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-btn:active { transform: scale(0.94); }
+
+.nav-btn-deal {
+  background: linear-gradient(135deg, #1a5a30, #12401f);
+  color: #a0f0c0;
+  border: 1px solid #2a8040;
+  font-size: 0.82rem;
+  padding: 0 16px;
+}
+.nav-btn-deal:hover { background: linear-gradient(135deg, #256a3e, #1a5028); }
+
+.nav-btn-restart {
+  background: rgba(80,40,10,0.7);
+  color: #f0c060;
+  border: 1px solid rgba(201,168,76,0.4);
+  width: 38px;
+  padding: 0;
+  font-size: 1rem;
+}
+.nav-btn-fold {
+  background: #5a1e1e;
+  color: #f0a0a0;
+  border: 1px solid #8b2e2e;
+}
+.nav-btn-fold:hover { background: #7a2828; }
+
+.nav-btn-call {
+  background: #1e3a5a;
+  color: #a0c8f0;
+  border: 1px solid #2e6090;
+}
+.nav-btn-call:hover { background: #2a5080; }
+
+.nav-btn-raise {
+  background: linear-gradient(135deg, #b8860b, #8b6914);
+  color: #fff8e0;
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 8px rgba(201,168,76,0.2);
+}
+.nav-btn-raise:hover { box-shadow: 0 0 14px rgba(201,168,76,0.4); }
+
+/* Disable old action-bar styles that may remain */
+.action-bar { display: none !important; }
+
+@media (max-width: 380px) {
+  .nav-btn { font-size: 0.68rem; height: 34px; }
+  .nav-action-buttons { gap: 3px; padding: 0 5px; }
+}

@@ -298,11 +298,13 @@ function playerRaise() {
 }
 
 function setButtonsLocked(locked) {
-  const bar = document.querySelector('.action-bar');
-  if (locked) bar.classList.add('opponents-acting');
-  else bar.classList.remove('opponents-acting');
   const label = document.getElementById('thinking-label');
-  label.textContent = locked ? '⏳ Оппоненты думают...' : '';
+  if (label) label.textContent = locked ? '⏳ Думают...' : '';
+  // Disable/enable action buttons
+  ['btn-fold','btn-call','btn-raise'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) { btn.style.opacity = locked ? '0.35' : '1'; btn.style.pointerEvents = locked ? 'none' : 'auto'; }
+  });
 }
 
 // Bot decision logic
