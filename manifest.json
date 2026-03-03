@@ -2,7 +2,7 @@
   "name": "fapviamia",
   "short_name": "fapviamia",
   "description": "Учись математике покера и запоминай комбинации",
-  "start_url": "/",
+  "start_url": "/fapviamia666/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0d1f14",
@@ -56,5 +56,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "scope": "/fapviamia666/"
 }

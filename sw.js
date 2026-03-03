@@ -1,23 +1,24 @@
 const CACHE_NAME = 'poker-v1';
 
+const BASE = '/fapviamia666';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/game.js',
-  '/manifest.json',
-  '/images/dealer.png',
-  '/images/cardback.png',
-  '/images/doodle.png',
-  '/images/avatar1.png',
-  '/images/avatar2.png',
-  '/images/avatar3.png',
-  '/images/avatar4.png',
-  '/images/avatar5.png',
-  '/images/avatar6.png',
-  '/images/avatar7.png',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/css/style.css',
+  BASE + '/js/game.js',
+  BASE + '/manifest.json',
+  BASE + '/images/dealer.png',
+  BASE + '/images/cardback.png',
+  BASE + '/images/doodle.png',
+  BASE + '/images/avatar1.png',
+  BASE + '/images/avatar2.png',
+  BASE + '/images/avatar3.png',
+  BASE + '/images/avatar4.png',
+  BASE + '/images/avatar5.png',
+  BASE + '/images/avatar6.png',
+  BASE + '/images/avatar7.png',
+  BASE + '/icons/icon-192x192.png',
+  BASE + '/icons/icon-512x512.png',
 ];
 
 // Install: cache all assets

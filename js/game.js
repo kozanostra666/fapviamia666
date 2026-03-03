@@ -504,12 +504,32 @@ function startAmbientPhrases() {
   });
 }
 
+
+// ============================================================
+// MUTE / UNMUTE
+// ============================================================
+let isMuted = false;
+
+function toggleMute() {
+  isMuted = !isMuted;
+  const btn = document.getElementById('mute-btn');
+  if (btn) {
+    btn.textContent = isMuted ? '🔇' : '🔊';
+    btn.classList.toggle('muted', isMuted);
+  }
+  if (isMuted) {
+    // Hide all visible bubbles immediately
+    document.querySelectorAll('.speech-bubble.show').forEach(b => b.classList.remove('show'));
+  }
+}
+
 function stopAmbientPhrases() {
   ambientTimers.forEach(t => clearTimeout(t));
   ambientTimers = [];
 }
 
 function showAmbientBubble(i, text) {
+  if (isMuted) return;
   const b = document.getElementById('bubble-' + i);
   if (!b) return;
   // Don't override an active action bubble
@@ -665,9 +685,12 @@ function closeResult() {
 }
 
 function updateChipsDisplay() {
-  document.getElementById('player-chips').textContent = playerChips;
-  document.getElementById('chips-display').textContent = playerChips;
-  document.getElementById('pot-value').textContent = pot;
+  const pc = document.getElementById('player-chips');
+  if (pc) pc.textContent = playerChips;
+  const cd = document.getElementById('chips-display');
+  if (cd) cd.textContent = playerChips;
+  const pv = document.getElementById('pot-value');
+  if (pv) pv.textContent = pot;
 }
 
 // ============================================================
@@ -776,16 +799,7 @@ window.advanceStage = function() {
   }
 };
 
-function restartGame() {
-  playerChips = 1000;
-  pot = 0;
-  stage = 0;
-  roundActive = false;
-  closeResult();
-  document.getElementById('btn-restart').style.display = 'none';
-  document.getElementById('result-overlay').classList.remove('show');
-  updateChipsDisplay();
-}
+
 
 
 // ============================================================
@@ -845,6 +859,7 @@ function renderSeats() {
 }
 
 function showBubble(i, text, actionClass, duration = 2200) {
+  if (isMuted) return;
   const b = document.getElementById('bubble-' + i);
   if (!b) return;
   b.textContent = text;
@@ -874,24 +889,23 @@ function updateSeatChips() {
   });
 }
 
-// Patch restartGame to show lobby
-const _origRestart = restartGame;
-window.restartGame = function() {
+function restartGame() {
   playerChips = 1000;
   pot = 0; stage = 0; roundActive = false;
-  selectedOpponents = []; selectedCount = 0;
-  activeOpponents = [];
+  selectedOpponents = [];
   selectedCount = 0;
+  activeOpponents = [];
+  stopAmbientPhrases();
   document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('selected'));
   const btn = document.getElementById('lobby-start-btn');
-  btn.style.opacity = '0.4';
-  btn.style.pointerEvents = 'none';
+  if (btn) { btn.style.opacity = '0.4'; btn.style.pointerEvents = 'none'; }
   document.getElementById('lobby-overlay').classList.remove('hidden');
   closeResult();
-  document.getElementById('btn-restart').style.display = 'none';
+  const rb = document.getElementById('btn-restart');
+  if (rb) rb.style.display = 'none';
+  document.getElementById('result-overlay').classList.remove('show');
   updateChipsDisplay();
-};
-
+}
 // Patch showDealer / startRound to use activeOpponents
 const _origDealerStart = window.startRound;
 window.startRound = function() {
@@ -1020,3 +1034,13 @@ window.closeResult = function() {
   if (activeOpponents.length) renderSeats();
 };
 
+
+// ============================================================
+// SETTINGS MODAL
+// ============================================================
+function openSettings() {
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('open');
+}
