@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="fapviamia">
+<meta name="theme-color" content="#1a4a2e">
+<meta name="description" content="fapviamia">
+<title>fapviamia</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180x180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96x96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="lobby-overlay" id="lobby-overlay">
+  <div class="lobby-card">
+    <h2>♠ Выбери оппонентов ♥</h2>
+    <p>Сколько противников за столом? Они будут выбраны случайно</p>
+    <div class="count-selector" id="count-selector">
+      <button class="count-btn" onclick="selectCount(1)">1</button>
+      <button class="count-btn" onclick="selectCount(2)">2</button>
+      <button class="count-btn" onclick="selectCount(3)">3</button>
+      <button class="count-btn" onclick="selectCount(4)">4</button>
+      <button class="count-btn" onclick="selectCount(5)">5</button>
+      <button class="count-btn" onclick="selectCount(6)">6</button>
+    </div>
+    <button class="btn btn-deal" id="lobby-start-btn" onclick="launchGame()" style="opacity:0.4;pointer-events:none">Случайная раздача ♠</button>
+  </div>
+</div>
+
+<div id="game-container" onclick="event.stopPropagation()">
+  <div class="title-bar">
+    <h1>♠ Покер — Школа Карт ♥</h1>
+    <p>Учись читать руки и считать вероятности</p>
+  </div>
+
+  <div class="table-wrapper" style="position:relative;overflow:visible">
+    <div class="dealer-wrap" id="dealer-wrap">
+      <img class="dealer-img" src="images/dealer.png" alt="dealer" id="dealer-img">
+    </div>
+    <div class="poker-table">
+      <div class="player-zone" id="opponents-zone">
+        <div class="seats-row" id="seats-row"></div>
+        <div id="opponents-cards-wrap" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap"></div>
+      </div>
+      <div class="table-divider"></div>
+      <div class="community-section">
+        <div class="stage-progress" id="stage-progress">
+          <div class="stage-dot" id="sd-pre"></div>
+          <span style="font-size:0.65rem;color:rgba(245,240,232,0.3)">PRE</span>
+          <div class="stage-dot" id="sd-flop"></div>
+          <span style="font-size:0.65rem;color:rgba(245,240,232,0.3)">FLOP</span>
+          <div class="stage-dot" id="sd-turn"></div>
+          <span style="font-size:0.65rem;color:rgba(245,240,232,0.3)">TURN</span>
+          <div class="stage-dot" id="sd-river"></div>
+          <span style="font-size:0.65rem;color:rgba(245,240,232,0.3)">RIVER</span>
+        </div>
+        <div class="pot-display">БАНК: <span id="pot-value">0</span> фишек</div>
+        <div class="cards-row" id="community-cards">
+          <div class="card-slot" id="cc0"></div>
+          <div class="card-slot" id="cc1"></div>
+          <div class="card-slot" id="cc2"></div>
+          <div class="card-slot" id="cc3"></div>
+          <div class="card-slot" id="cc4"></div>
+        </div>
+      </div>
+      <div class="table-divider"></div>
+      <div class="player-zone">
+        <div class="cards-row" id="player-cards"></div>
+        <div class="opponent-info">
+          <span>ВЫ</span>
+          <span id="player-chips-label" style="color:var(--gold-light)">● <span id="player-chips">1000</span></span>
+          <div class="opponent-chip" style="background:var(--chip-blue);box-shadow:0 0 6px rgba(41,128,185,0.6)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="best-hand-banner" id="best-hand-banner">
+    <span>Раздайте карты чтобы начать</span>
+  </div>
+
+  <div class="action-bar">
+    <div class="chips-display">💰 <span id="chips-display">1000</span></div>
+    <div class="opponents-thinking" id="thinking-label"></div>
+    <div class="action-buttons">
+      <button class="btn btn-restart" id="btn-restart" onclick="restartGame()" style="display:none">↺</button>
+      <button class="btn btn-deal" id="btn-deal" onclick="startRound()">Раздать карты</button>
+      <button class="btn btn-fold" id="btn-fold" onclick="playerFold()" style="display:none">Пас</button>
+      <button class="btn btn-call" id="btn-call" onclick="playerCall()" style="display:none">Колл</button>
+      <button class="btn btn-raise" id="btn-raise" onclick="playerRaise()" style="display:none">Рейз</button>
+    </div>
+  </div>
+
+  <div class="hint-panel">
+    <h3>🎓 Комбинации в покере</h3>
+    <div class="hint-grid" id="hint-grid"></div>
+  </div>
+
+  <details class="hands-ref">
+    <summary>Справочник — Все комбинации покера</summary>
+    <div class="hands-table" id="hands-table"></div>
+  </details>
+</div>
+
+<div class="result-overlay" id="result-overlay">
+  <div class="result-card">
+    <div id="result-emoji" style="font-size:3rem;margin-bottom:10px"></div>
+    <h2 id="result-title"></h2>
+    <div class="result-hand" id="result-hand"></div>
+    <div id="result-chips" class="result-chips"></div>
+    <div class="result-desc" id="result-desc"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-restart" onclick="restartGame()">↺ Сброс фишек</button>
+      <button class="btn btn-deal" onclick="closeResult()">Следующий раунд</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/game.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(r => console.log('SW ok:', r.scope))
+        .catch(e => console.log('SW err:', e));
+    });
+  }
+</script>
+</body>
+</html>
