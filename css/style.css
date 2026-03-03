@@ -1125,3 +1125,37 @@ button { touch-action: manipulation; }
   .nav-btn { font-size: 0.68rem; height: 34px; }
   .nav-action-buttons { gap: 3px; padding: 0 5px; }
 }
+
+/* ============================================================
+   NAV BTN LABEL / VALUE TWO-LINE LAYOUT
+   ============================================================ */
+.nav-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.nav-btn-label {
+  font-size: inherit;
+}
+.nav-btn-value {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+/* Mobile: stack label on top, value below */
+@media (max-width: 599px) {
+  .nav-btn {
+    flex-direction: column;
+    gap: 1px;
+    line-height: 1.2;
+    height: 42px;
+  }
+  .nav-btn-label {
+    font-size: 0.78rem;
+  }
+  .nav-btn-value {
+    font-size: 0.62rem;
+    opacity: 0.7;
+  }
+}

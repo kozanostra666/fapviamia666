@@ -1,4 +1,15 @@
 
+function setNavBtnText(id, label, value) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  if (value !== undefined && value !== null) {
+    btn.innerHTML = `<span class="nav-btn-label">${label}</span><span class="nav-btn-value">${value}</span>`;
+  } else {
+    btn.innerHTML = `<span class="nav-btn-label">${label}</span>`;
+  }
+}
+
+
 // ============================================================
 // DATA
 // ============================================================
@@ -262,8 +273,8 @@ function startRound() {
   document.getElementById('btn-fold').style.display = '';
   document.getElementById('btn-call').style.display = '';
   document.getElementById('btn-raise').style.display = '';
-  document.getElementById('btn-call').textContent = `Колл (50)`;
-  document.getElementById('btn-raise').textContent = `Рейз (150)`;
+  setNavBtnText('btn-call','Колл','50');
+  setNavBtnText('btn-raise','Рейз','150');
 }
 
 function playerFold() {
@@ -598,8 +609,8 @@ function advanceStage() {
     renderCommunity();
     updateChipsDisplay();
     updateHints();
-    document.getElementById('btn-call').textContent = `Чек/Колл (${Math.round(pot*0.3)})`;
-    document.getElementById('btn-raise').textContent = `Бет/Рейз (${Math.round(pot*0.6)})`;
+    setNavBtnText('btn-call','Колл',Math.round(pot*0.3));
+    setNavBtnText('btn-raise','Рейз',Math.round(pot*0.6));
     BET_SIZES.call = Math.round(pot*0.3);
     BET_SIZES.raise = Math.round(pot*0.6);
   } else if (stage === 2) {
@@ -611,8 +622,8 @@ function advanceStage() {
     updateHints();
     BET_SIZES.call = Math.round(pot*0.4);
     BET_SIZES.raise = Math.round(pot*0.8);
-    document.getElementById('btn-call').textContent = `Колл (${BET_SIZES.call})`;
-    document.getElementById('btn-raise').textContent = `Рейз (${BET_SIZES.raise})`;
+    setNavBtnText('btn-call','Колл',BET_SIZES.call);
+    setNavBtnText('btn-raise','Рейз',BET_SIZES.raise);
   } else if (stage === 3) {
     // Deal river
     community.push(deal(1)[0]);
@@ -622,8 +633,8 @@ function advanceStage() {
     updateHints();
     BET_SIZES.call = Math.round(pot*0.5);
     BET_SIZES.raise = Math.round(pot);
-    document.getElementById('btn-call').textContent = `Колл (${BET_SIZES.call})`;
-    document.getElementById('btn-raise').textContent = `Рейз (${BET_SIZES.raise})`;
+    setNavBtnText('btn-call','Колл',BET_SIZES.call);
+    setNavBtnText('btn-raise','Рейз',BET_SIZES.raise);
   } else if (stage === 4) {
     // Showdown
     showdown();
@@ -971,8 +982,8 @@ window.startRound = function() {
         document.getElementById('btn-fold').style.display = '';
         document.getElementById('btn-call').style.display = '';
         document.getElementById('btn-raise').style.display = '';
-        document.getElementById('btn-call').textContent = 'Колл (50)';
-        document.getElementById('btn-raise').textContent = 'Рейз (150)';
+        setNavBtnText('btn-call','Колл','50');
+        setNavBtnText('btn-raise','Рейз','150');
         return;
       }
       flyCard(dealerImg, seq[idx], 0, () => { idx++; setTimeout(next, 60); });
